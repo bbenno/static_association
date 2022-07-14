@@ -57,14 +57,15 @@ module StaticAssociation
   module AssociationHelpers
     def belongs_to_static(name, opts = {})
       class_name = opts.fetch(:class_name, name.to_s.camelize)
+      foreign_key_name = opts.fetch(:foreign_key, "#{name}_id")
 
       send(:define_method, name) do
-        foreign_key = send("#{name}_id")
+        foreign_key = read_attribute(foreign_key_name)
         class_name.constantize.find_by_id(foreign_key)
       end
 
       send(:define_method, "#{name}=") do |assoc|
-        send("#{name}_id=", assoc.id)
+        write_attribute(foreign_key_name, assoc.id)
       end
     end
   end
