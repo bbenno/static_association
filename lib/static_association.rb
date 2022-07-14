@@ -11,6 +11,8 @@ module StaticAssociation
 
   class RecordNotFound < StandardError; end
 
+  class UnknownAttributeReference < StandardError; end
+
   attr_reader :id
 
   private
@@ -42,6 +44,11 @@ module StaticAssociation
 
     def where(id: [])
       all.select { |record| id.include?(record.id) }
+    end
+
+    def pluck(attr)
+      raise UnknownAttributeReference unless method_defined? attr
+      all.map(&:"#{attr}")
     end
 
     def record(settings, &block)
