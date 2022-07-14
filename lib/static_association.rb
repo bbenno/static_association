@@ -72,7 +72,7 @@ module StaticAssociation
       end
 
       send(:define_method, "#{name}=") do |assoc|
-        write_attribute(foreign_key_name, assoc.id)
+        write_attribute(foreign_key_name, assoc&.id)
       end
     end
   end
