@@ -27,7 +27,7 @@ module StaticAssociation
     delegate :each, to: :all
 
     def index
-      @index ||= {}
+      @index ||= {}.with_indifferent_access
     end
 
     def all
